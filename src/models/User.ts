@@ -77,7 +77,6 @@ const UserSchema = new Schema<IUser>(
 );
 
 // Index for faster queries
-UserSchema.index({ email: 1 });
-UserSchema.index({ googleId: 1 });
+// Unique and sparse constraints already create indexes; no extra indexes needed
 
 export default mongoose.model<IUser>('User', UserSchema);
