@@ -13,11 +13,10 @@ const app: Application = express();
 connectDB();
 
 // Middleware
-const allowedOrigins = (config.clientUrl || '').split(',').map(url => url.trim()).filter(Boolean);
-// Add localhost for development
-if (!allowedOrigins.includes('http://localhost:5173')) {
-  allowedOrigins.push('http://localhost:5173');
-}
+const allowedOrigins = [
+  'https://secret-santa-client-812y1m4c2-dumindu-mendis-projects.vercel.app',
+  'http://localhost:5173',
+];
 
 app.use(
   cors({
