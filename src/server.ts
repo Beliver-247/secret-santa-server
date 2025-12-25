@@ -13,9 +13,24 @@ const app: Application = express();
 connectDB();
 
 // Middleware
+const allowedOrigins = (config.clientUrl || '').split(',').map(url => url.trim()).filter(Boolean);
+// Add localhost for development
+if (!allowedOrigins.includes('http://localhost:5173')) {
+  allowedOrigins.push('http://localhost:5173');
+}
+
 app.use(
   cors({
-    origin: config.clientUrl,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.some(allowed => origin.includes(allowed) || allowed.includes(origin))) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
